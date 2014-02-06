@@ -4,11 +4,11 @@ var url = require("url");
 function start(route){
 	function onRequest(request, response) {
 		
-		//Get Pathname
+		//Get Pathname 
 		var pathname = url.parse(request.url).pathname;
 		console.log("Server: Request for " + pathname + " received.");
 		
-		//Call di router.js
+		//Call the router.js
 		route(pathname);
 		
 		response.writeHead(200, {"Content-Type": "text/plain"});
