@@ -11,12 +11,7 @@ function start(route, handle){
 		console.log("Server: Request for " + pathname + " received.");
 		
 		//Call the router.js
-		
-		var content = route(handle, pathname);
-	    
-		response.writeHead(200, {"Content-Type": "text/plain"});
-		response.write(content);
-		response.end();
+		route(handle, pathname, response);
 	    
 		console.timeEnd("request");
 	}

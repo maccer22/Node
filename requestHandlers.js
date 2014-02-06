@@ -2,17 +2,23 @@
 var exec = require("child_process").exec;
 
 
-function start() {
+function start(response) {
 
     console.log("Request handler 'start' was called.");
+    var content = "empty";
 
-    exec("ls -lah", function (error, stdout, stderr) {
-        content = stdout;
+    exec("find /",
+    { timeout: 10000, maxBuffer: 20000 * 1024 },
+    function (error, stdout, stderr) {
+        response.writeHead(200, { "Content-Type": "text/plain" });
+        response.write(stdout);
+        response.write("find end");
+        console.log(stderr);
+        console.log(error);
+        response.end();
     });
 
-    return content;
-
-
+    
     //function sleep(milliSeconds) {
     //    var startTime = new Date().getTime();
     //    while (new Date().getTime() < startTime + milliSeconds);
@@ -21,14 +27,20 @@ function start() {
 
     //return "Hello start";
 }
-function upload() {
+function upload(response) {
     console.log("Request handler 'upload' was called.");
-    return "Hello upload";
+    response.writeHead(404, { "Content-Type": "text/plain" });
+    response.write("Upload");
+    response.end();
+
+
 }
 
-function favicon() {
+function favicon(response) {
     //console.log("Request handler 'favicon' was called.");
-    return "";
+    response.writeHead(404, { "Content-Type": "text/plain" });
+    response.write("");
+    response.end();
 }
 
 exports.start = start;
