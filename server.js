@@ -5,13 +5,25 @@ function start(route, handle){
 	function onRequest(request, response) {
 		
 	    console.time("request");
+
+	    var postData = "";
 	    
 		//Get Pathname 
 		var pathname = url.parse(request.url).pathname;
-		console.log("Server: Request for " + pathname + " received.");
 		
+		request.setEncoding("utf8");
+
+		request.addListener("data", function (postDataChunk) {
+		    postData += postDataChunk;
+		    console.log("Received POST data chunk '" +
+            postDataChunk + "'.");
+		});
+		request.addListener("end", function () {
+		    route(handle, pathname, response, postData);
+		});
+
 		//Call the router.js
-		route(handle, pathname, response);
+		//route(handle, pathname, response, postData);
 	    
 		console.timeEnd("request");
 	}
